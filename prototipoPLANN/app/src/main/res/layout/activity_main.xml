@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorAccent"
+    tools:context="com.example.felipe.interfacesplann.MainActivity">
+
+    <ImageView
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:id="@+id/imagePlanncirc"
+        android:background="@drawable/planncirc"
+        android:layout_centerInParent="true"
+        android:onClick="iniciar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido"
+        android:id="@+id/textoBienvenida"
+        android:textColor="#ffffff"
+        android:textSize="28dp"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/imagePlanncirc"
+        android:layout_centerHorizontal="true"
+        android:typeface="normal"
+        android:shadowColor="#000000"
+        android:singleLine="false" />
+</RelativeLayout>

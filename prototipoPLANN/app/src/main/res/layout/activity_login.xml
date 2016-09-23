@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:layout_marginTop="44dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Usuario"
+            android:textColor="#FFFFFF"
+            android:id="@+id/textNombre"/>
+
+        <EditText
+            android:layout_width="291dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/editNombre"
+            android:textColor="#ffffff"
+            android:gravity="left"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Contraseña:"
+            android:textColor="#FFFFFF"
+            android:id="@+id/textPass"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="#ffffff"
+            android:id="@+id/editPass"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/botonCont"
+            android:text="CONTINUAR"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:onClick="continuar"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Acerca de PLANN"
+        android:textColor="#FFFFFF"
+        android:id="@+id/textoAbout"
+        android:onClick="abrirAbout"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="40dp"
+        android:id="@+id/frameAbout"
+        android:animateLayoutChanges="true">
+
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scrollAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿Deseas aventura en la zona lacustre?, ¿Eres de las personas que le gusta la naturaleza que posee la región de la Araucanía?, ¿Te gusta viajar, pero nunca encuentras toda la información que necesitas para hacerlo?
+
+    Traemos para ti la mejor aplicación para planificar tus vacaciones, y para poder encontrar todo lo necesario para una buena estadía. PLANN te proporcionará toda la ayuda para encontrar lo que necesites a lo largo y ancho de la zona lacustre. Usa PLANN!"
+                android:id="@+id/textoInfo"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ffffff"
+                android:textSize="18dp"
+                android:typeface="normal" />
+
+        </ScrollView>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:text="V"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:onClick="cerrarAbout"
+            android:id="@+id/botonCerrarAbout"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="right|top"
+            android:layout_alignTop="@+id/frameAboutHijo"
+            android:layout_alignRight="@+id/frameAboutHijo"
+            android:layout_alignEnd="@+id/frameAboutHijo" />
+    </FrameLayout>
+
+    <!--#00ffffff-->
+
+</RelativeLayout>
