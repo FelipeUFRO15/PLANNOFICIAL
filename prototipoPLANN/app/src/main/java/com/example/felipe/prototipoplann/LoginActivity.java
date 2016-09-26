@@ -21,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.frameAbout = (FrameLayout) findViewById(R.id.frameAbout);
-        //cerrarAbout(frameAbout);
         frameAbout.setVisibility(View.GONE);
 
     }
@@ -34,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void abrirAbout(View view){
         Animation animationIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_up);
-        //use this to make it longer:  animation.setDuration(1000);
+        //animation.setDuration(int);
         animationIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
@@ -49,22 +48,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         frameAbout.startAnimation(animationIn);
-
-
-        //this.frameAbout.setVisibility(View.VISIBLE);
-        /**frameAbout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                }
-            }
-        });*/
     }
 
     public void cerrarAbout(View view){
-        //Toast.makeText(getApplicationContext(), "apreta3 xdxdXDXDxd", Toast.LENGTH_LONG).show();
         Animation animationOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_down);
-        //use this to make it longer:  animation.setDuration(1000);
         animationOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
@@ -79,6 +66,5 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         frameAbout.startAnimation(animationOut);
-        //frameAbout.setVisibility(View.INVISIBLE);
     }
 }

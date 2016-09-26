@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textoBienvenida;
     ImageView imagen;
 
     @Override
