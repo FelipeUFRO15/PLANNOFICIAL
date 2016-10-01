@@ -67,4 +67,10 @@ public class LoginActivity extends AppCompatActivity {
 
         frameAbout.startAnimation(animationOut);
     }
+
+    @Override
+    public void onBackPressed(){
+        View view = new View(LoginActivity.this);
+        cerrarAbout(view);
+    }
 }
