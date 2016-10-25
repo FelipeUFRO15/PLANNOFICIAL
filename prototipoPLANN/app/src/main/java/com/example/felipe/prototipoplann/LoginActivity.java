@@ -1,13 +1,17 @@
 package com.example.felipe.prototipoplann;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -16,6 +20,8 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
 
     FrameLayout frameAbout;
+    Button botonCont;
+    TextView textoAbout;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -23,6 +29,14 @@ public class LoginActivity extends AppCompatActivity {
         this.frameAbout = (FrameLayout) findViewById(R.id.frameAbout);
         frameAbout.setVisibility(View.GONE);
 
+        AssetManager am = getAssets();
+        Typeface tf = Typeface.createFromAsset(am, "fonts/montserrat.ttf");
+
+        textoAbout = (TextView) findViewById(R.id.textoAbout);
+        textoAbout.setTypeface(tf);
+
+        botonCont = (Button) findViewById(R.id.botonCont);
+        botonCont.setTypeface(tf);
     }
 
     public void continuar(View view){

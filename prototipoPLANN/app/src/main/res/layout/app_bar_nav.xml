@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/appBarNav"
     tools:context="com.example.felipe.prototipoplann.NavActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -21,6 +22,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_nav" />
+    <!--ViewStub
+        android:id="@+id/stub"
+        android:inflatedId="@+id/content_nav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.75" /-->
+
+    <include layout="@layout/contenido_nav_bar"/>
 
 </android.support.design.widget.CoordinatorLayout>

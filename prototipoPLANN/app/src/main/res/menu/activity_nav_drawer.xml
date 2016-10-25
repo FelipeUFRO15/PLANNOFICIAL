@@ -22,6 +22,18 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Página" />
+            <item
+                android:id="@+id/nav_face"
+                android:icon="@drawable/facebookicon"
+                android:title="Facebook" />
+            <item
+                android:id="@+id/nav_twit"
+                android:icon="@drawable/twittericon"
+                android:title="Twitter" />
+            <item
+                android:id="@+id/nav_ins"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Instagram" />
         </menu>
     </item>
 
