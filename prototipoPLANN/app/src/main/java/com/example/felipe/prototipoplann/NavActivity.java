@@ -1,10 +1,12 @@
 package com.example.felipe.prototipoplann;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,20 +17,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewStub;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.zip.Inflater;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class NavActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     ScrollView scrollAbout;
     PopupWindow infoImagen;
@@ -38,6 +42,8 @@ public class NavActivity extends AppCompatActivity
     LinearLayout content;
     LinearLayout horario;
     LinearLayout contenido;
+    private GoogleMap mapa;
+    private String datos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,18 @@ public class NavActivity extends AppCompatActivity
         //this.appBarNav = (CoordinatorLayout) findViewById(R.id.appBarNav);
 
         this.contenido = (LinearLayout) findViewById(R.id.contenido);
-        inicializarImagenes();
+        //MapaHandler mh = new MapaHandler();
+        //mh.onCreate(savedInstanceState);
+
+        //inicializarMapa();
+        cargarMapa();
+
+
+
+
+
+
+        //inicializarImagenes();
 
         //this.content = (LinearLayout) findViewById(R.id.content);
         //appBarNav = getLayoutInflater().inflate(R.layout.content_nav);
@@ -154,6 +171,7 @@ public class NavActivity extends AppCompatActivity
             this.stub.inflate();*/
 
         } else if (id == R.id.nav_share) {
+            cargarMapa();
 
         } else if (id == R.id.nav_send) {
             String unLink = "http://plann.net16.net/";
@@ -223,11 +241,25 @@ public class NavActivity extends AppCompatActivity
         clickImagenes();
     }
 
+    public void cargarMapa(){
+        MapFragment mapFragment
+                = (MapFragment) getFragmentManager().findFragmentById(R.id.mapa);
+        mapFragment.getMapAsync(this);
+    }
+
+    private void inicializarMapa(){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        MapFragment mapF = new MapFragment();
+        fragmentTransaction.add(R.id.contenido, mapF, "HELLO");
+        fragmentTransaction.commit();
+    }
+
     public void infoImagen(View img){
         String tag = (String) img.getTag();
         for(int i = 1; i <= 6; i++){
             if (tag.equals("" + i)){
-                FragmentManager fm = getSupportFragmentManager();
+                android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
                 DialogoAlerta dialogo = new DialogoAlerta();
                 dialogo.setBuilder(this.nombresLugares[i - 1], "Lugar:", "OK");
                 dialogo.show(fm, "tagAlerta");
@@ -238,4 +270,78 @@ public class NavActivity extends AppCompatActivity
     public void accionTexto(View view){
         Toast.makeText(getApplicationContext(), "Tag: " + view.getTag().toString(), Toast.LENGTH_SHORT).show();
     }
+
+    private void metodoMarker(Marker marker){
+        Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_LONG).show();
+        this.datos = marker.getTitle();
+        contenido.removeAllViews();
+        contenido.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_horario, contenido, false));
+
+        TextView texto1 = (TextView) findViewById(R.id.texto1);
+        texto1.setText(datos);
+        texto1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                accionTexto(view);
+            }
+        });
+
+        TextView texto2 = (TextView) findViewById(R.id.texto2);
+        texto2.setText(datos);
+        texto2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                accionTexto(view);
+            }
+        });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.mapa = googleMap;
+        Toast.makeText(getApplicationContext(), "Método ejecuta3 xdxDXDXdx", Toast.LENGTH_LONG).show();
+        Log.w("MENSAJE MIRA AQUÍ", "MENSAJE MIRA AQUÍ");
+        this.mapa.addMarker(new MarkerOptions()
+                .position(new LatLng(-38.7290843, -72.6377406))
+                .title("Ciudad: Temuco"));
+        this.mapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                metodoMarker(marker);
+                return true;
+            }
+        });
+    }
+
+    /**private class MapaHandler extends AppCompatActivity
+            implements OnMapReadyCallback {
+
+        private GoogleMap mapa;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+            com.google.android.gms.maps.MapFragment mapFragment = (com.google.android.gms.maps.MapFragment) getFragmentManager()
+                    .findFragmentById(R.id.mapa);
+
+            mapFragment.getMapAsync(NavActivity.this);
+            mapa.addMarker(new MarkerOptions()
+                    .position(new LatLng(-38.7290843, -72.6377406))
+                    .title("Ciudad: Temuco"));
+            mapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_LONG).show();
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public void onMapReady(GoogleMap map) {
+            mapa = map;
+        }
+    }*/
 }
