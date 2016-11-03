@@ -22,13 +22,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--ViewStub
-        android:id="@+id/stub"
-        android:inflatedId="@+id/content_nav"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.75" /-->
-
     <include layout="@layout/contenido_nav_bar"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/horario">
+    android:id="@+id/horario"
+    android:visibility="visible">
     <!--tools:context="com.example.felipe.prototipoplann.NavActivity"
     tools:showIn="@layout/app_bar_nav"-->
 

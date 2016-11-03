@@ -27,9 +27,12 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import static android.view.View.GONE;
 
 public class NavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -37,13 +40,16 @@ public class NavActivity extends AppCompatActivity
     ScrollView scrollAbout;
     PopupWindow infoImagen;
     String[] nombresLugares;
-    ImageView[] imagenes;
     CoordinatorLayout appBarNav;
-    LinearLayout content;
-    LinearLayout horario;
     LinearLayout contenido;
+    ImageView[] imagenes;
     private GoogleMap mapa;
     private String datos;
+    private int current;
+
+    View imagenesV;
+    View horarioV;
+    MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +65,14 @@ public class NavActivity extends AppCompatActivity
         //mh.onCreate(savedInstanceState);
 
         //inicializarMapa();
-        cargarMapa();
 
+        this.mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapa);
+        this.mapFragment.getMapAsync(this);
+        cargarMapa(true);
 
+        this.imagenesV = findViewById(R.id.imagenes);
+        this.horarioV = findViewById(R.id.horario);
 
-
-
-
-        //inicializarImagenes();
-
-        //this.content = (LinearLayout) findViewById(R.id.content);
-        //appBarNav = getLayoutInflater().inflate(R.layout.content_nav);
-        //this.horario = (LinearLayout) findViewById(R.id.horario);
-
-        /**
-        this.stub = (ViewStub) findViewById(R.id.stub);
-        this.stub.setLayoutResource(R.layout.content_nav);
-        this.stub.inflate();*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -131,47 +128,24 @@ public class NavActivity extends AppCompatActivity
 
         if (id == R.id.nav_gallery) {
             //this.contenido = (LinearLayout) findViewById(R.id.contenido);
+            //View view = findViewById(R.id.horario);
+
+            removeCurrent();
+            //contenido.removeAllViews();
             inicializarImagenes();
-            /**ImageView imagen1 = (ImageView) findViewById(R.id.imagen1);
-            imagen1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    infoImagen(view);
-                }
-            });
 
-
-            this.stub = (ViewStub) findViewById(R.id.stub);
-            this.stub.setLayoutResource(R.layout.content_nav);
-            this.stub.inflate();*/
 
         } else if (id == R.id.nav_slideshow) {
-            //this.contenido = (LinearLayout) findViewById(R.id.contenido);
-            contenido.removeAllViews();
-            contenido.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_horario, contenido, false));
-            TextView texto1 = (TextView) findViewById(R.id.texto1);
-            texto1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    accionTexto(view);
-                }
-            });
-            TextView texto2 = (TextView) findViewById(R.id.texto2);
-            texto2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    accionTexto(view);
-                }
-            });
-
-            //this.appBarNav = (CoordinatorLayout) findViewById(R.id.appBarNav);
-            /**
-            this.stub = (ViewStub) findViewById(R.id.stub);
-            this.stub.setLayoutResource(R.layout.activity_horario);
-            this.stub.inflate();*/
-
+            removeCurrent();
+            inicializarItinerario();
         } else if (id == R.id.nav_share) {
-            cargarMapa();
+            //View view = findViewById(R.id.content);
+            //view.setVisibility(GONE);
+            //contenido.removeView(view);
+            //contenido.removeAllViews();
+
+            removeCurrent();
+            cargarMapa(true);
 
         } else if (id == R.id.nav_send) {
             String unLink = "http://plann.net16.net/";
@@ -234,25 +208,60 @@ public class NavActivity extends AppCompatActivity
         this.nombresLugares[5] = "Parque Nacional Villarrica";
     }
 
+    public void cargarMapa(boolean vis){
+        if (vis) {
+            this.mapFragment.getView().setVisibility(View.VISIBLE);
+            this.current = 0;
+        } else this.mapFragment.getView().setVisibility(View.GONE);
+
+    }
+
     private void inicializarImagenes(){
-        contenido.removeAllViews();
-        contenido.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.content_nav, contenido, false));
+        //contenido.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.imagenes, contenido, true));
+        //contenido.addView(imagenesV);
+        this.imagenesV.setVisibility(View.VISIBLE);
         llenarImagenes();
-        clickImagenes();
+        //clickImagenes();
+        this.current = 1;
     }
 
-    public void cargarMapa(){
-        MapFragment mapFragment
-                = (MapFragment) getFragmentManager().findFragmentById(R.id.mapa);
-        mapFragment.getMapAsync(this);
+    private void inicializarItinerario(){
+        //contenido.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_horario, contenido, false));
+        //contenido.addView(horarioV);
+        this.horarioV.setVisibility(View.VISIBLE);
+        TextView texto1 = (TextView) findViewById(R.id.texto1);
+        texto1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                accionTexto(view);
+            }
+        });
+        TextView texto2 = (TextView) findViewById(R.id.texto2);
+        texto2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                accionTexto(view);
+            }
+        });
+        this.current = 2;
     }
 
-    private void inicializarMapa(){
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        MapFragment mapF = new MapFragment();
-        fragmentTransaction.add(R.id.contenido, mapF, "HELLO");
-        fragmentTransaction.commit();
+    private void removeCurrent(){
+        switch (this.current){
+            case 0:
+                cargarMapa(false);
+            case 1:
+                //contenido.removeView(imagenesV);
+                this.imagenesV.setVisibility(View.GONE);
+                //contenido.removeAllViews();
+                Toast.makeText(getApplicationContext(), "ALL VIEWS REMOVED " + 1, Toast.LENGTH_LONG).show();
+            case 2:
+                //contenido.removeView(horarioV);
+                //contenido.removeAllViews();
+                this.horarioV.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "ALL VIEWS REMOVED " + 2, Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void infoImagen(View img){
@@ -272,9 +281,15 @@ public class NavActivity extends AppCompatActivity
     }
 
     private void metodoMarker(Marker marker){
-        Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_LONG).show();
         this.datos = marker.getTitle();
-        contenido.removeAllViews();
+
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        DialogoAlerta dialogo = new DialogoAlerta();
+        dialogo.setBuilder("Más opciones", this.datos, "OK");
+        dialogo.show(fm, "tagAlerta");
+
+        //Toast.makeText(getApplicationContext(), this.datos, Toast.LENGTH_LONG).show();
+
         contenido.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_horario, contenido, false));
 
         TextView texto1 = (TextView) findViewById(R.id.texto1);
@@ -294,6 +309,7 @@ public class NavActivity extends AppCompatActivity
                 accionTexto(view);
             }
         });
+
     }
 
     @Override
@@ -304,6 +320,10 @@ public class NavActivity extends AppCompatActivity
         this.mapa.addMarker(new MarkerOptions()
                 .position(new LatLng(-38.7290843, -72.6377406))
                 .title("Ciudad: Temuco"));
+        this.mapa.addMarker(new MarkerOptions()
+                .position(new LatLng(-35.156368, -132.785230))
+                .title("Mi semestre  XD"));
+
         this.mapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -312,36 +332,4 @@ public class NavActivity extends AppCompatActivity
             }
         });
     }
-
-    /**private class MapaHandler extends AppCompatActivity
-            implements OnMapReadyCallback {
-
-        private GoogleMap mapa;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-
-            com.google.android.gms.maps.MapFragment mapFragment = (com.google.android.gms.maps.MapFragment) getFragmentManager()
-                    .findFragmentById(R.id.mapa);
-
-            mapFragment.getMapAsync(NavActivity.this);
-            mapa.addMarker(new MarkerOptions()
-                    .position(new LatLng(-38.7290843, -72.6377406))
-                    .title("Ciudad: Temuco"));
-            mapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    Toast.makeText(getApplicationContext(), marker.getTitle(), Toast.LENGTH_LONG).show();
-                    return true;
-                }
-            });
-        }
-
-        @Override
-        public void onMapReady(GoogleMap map) {
-            mapa = map;
-        }
-    }*/
 }
